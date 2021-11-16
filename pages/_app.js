@@ -12,8 +12,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Layout>
-      <p>tes</p>
-      <Component {...pageProps} isLogin={false} />
+      <Component {...pageProps} />
     </Layout>
   )
 }
