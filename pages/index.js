@@ -6,20 +6,19 @@ import { withApollo } from '../lib/apollo';
 const Home = () => {
   const query = 
     gql`{
-      categoryList(filters: {}) {
-        uid
-        name
-        image
+      categoryList {
         url_key
+        name
         children {
-          uid
-          name
           url_key
+          image
+          name
         }
       }
     }`
   const response = useQuery(query);
   const { loading, data, error } = response;
+  console.log(data)
   return (
     <div>
       <Head>
@@ -35,8 +34,8 @@ const Home = () => {
             </div>
           ) : (
             <div className="row">
-              {data.categoryList.map(category => (
-                <Link href={category.url_key !== null ? "/category/"+category.url_key : '#'} key={category.uid}>
+              {data.categoryList[0].children.map(category => (
+                <Link href={category.url_key !== null ? "/"+category.url_key : '#'} key={category.uid}>
                   <a className="col-6">
                     <div key={category.uid}>
                       <div className="card m-2 d-flex justify-content-center align-items-center flex-column" style={{maxWidth: '540px', height: 120}} key={category.uid}>
