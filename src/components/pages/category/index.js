@@ -5,9 +5,15 @@ import { gql, useQuery } from "@apollo/client";
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../../lib/apollo';
 
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
+import useStyles from './styles';
+
 const CategoryDetail = () => {
   const { query } = useRouter();
-
   const query_gql = gql`
   query getProductList($urlKey: String) {
     categoryList(filters:{url_key: {eq: $urlKey}}) {
@@ -47,7 +53,7 @@ const CategoryDetail = () => {
     }
   });
   const { loading, data, error } = response;
-  console.log(response)
+  const styles = useStyles();
 
   if (loading) {
     return (
@@ -73,24 +79,28 @@ const CategoryDetail = () => {
       <div className="container">
         <h2 className="mb-4">Product</h2>
         <div className="row">
-          <div className="row">
-            {data.categoryList[0].products.items.map(product => (
+          {data.categoryList[0].products.items.map(product => (
+            <div key={product.uid} className={styles.cardContainer}>
               <Link href={"/"+product.url_key} key={product.uid}>
-                <a className="col-6" >
-                  <div>
-                    <div className="card m-2">
-                      <div className="card-body d-flex align-items-center justify-content-center flex-column">
-                        {product.image.url && (
-                          <img src={product.image.url} style={{maxWidth: '240px'}} alt={product.name} />
-                        )}
-                        <h3>{product.name}</h3>
-                      </div>
-                    </div>
-                  </div>
-                </a>
+                <Card sx={{ maxWidth: 345, height: 245 }}>
+                  <CardActionArea >
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      classes={styles.imageContainer}
+                      image={product.image.url}
+                      alt={product.name}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {product.name}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>           
               </Link>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </>
