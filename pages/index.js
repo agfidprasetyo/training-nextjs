@@ -18,7 +18,13 @@ const Home = () => {
     }`
   const response = useQuery(query);
   const { loading, data, error } = response;
-  console.log(data)
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100%' }}>
+        <div className="spinner-border" />
+      </div>
+    )
+  }
   return (
     <div>
       <Head>
@@ -28,30 +34,24 @@ const Home = () => {
       <div className="container">
         <h2 className="mb-4">All Categories</h2>
         <div className="row">
-          {loading ? (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100%' }}>
-              <div className="spinner-border" />
-            </div>
-          ) : (
-            <div className="row">
-              {data.categoryList[0].children.map(category => (
-                <Link href={category.url_key !== null ? "/"+category.url_key : '#'} key={category.uid}>
-                  <a className="col-6">
-                    <div key={category.uid}>
-                      <div className="card m-2 d-flex justify-content-center align-items-center flex-column" style={{maxWidth: '540px', height: 120}} key={category.uid}>
-                        <div className="d-flex justify-content-center align-items-center flex-column">
-                          {category.image && (
-                            <img src={category.image} style={{maxWidth: '140px'}} alt={category.name} />
-                          )}
-                          <h5>{category.name}</h5>
-                        </div>
+          <div className="row">
+            {data.categoryList[0].children.map(category => (
+              <Link href={category.url_key !== null ? "/"+category.url_key : '#'} key={category.uid}>
+                <a className="col-6">
+                  <div key={category.uid}>
+                    <div className="card m-2 d-flex justify-content-center align-items-center flex-column" style={{maxWidth: '540px', height: 120}} key={category.uid}>
+                      <div className="d-flex justify-content-center align-items-center flex-column">
+                        {category.image && (
+                          <img src={category.image} style={{maxWidth: '140px'}} alt={category.name} />
+                        )}
+                        <h5>{category.name}</h5>
                       </div>
                     </div>
-                  </a>
-                </Link>
-              ))}
+                  </div>
+                </a>
+              </Link>
+            ))}
             </div>
-          )}
         </div>
       </div>
     </div>

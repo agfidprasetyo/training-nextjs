@@ -36,17 +36,6 @@ const CategoryDetail = () => {
     }
   }`
 
-  // const query_gql = gql`
-  // query getCategoryProducts($categoryId: Int) {
-  //   products(filter: { category_id: { eq: $categoryId}}) {
-  //     total_count
-  //     items {
-  //       uid
-  //       name
-  //       url_key
-  //     }
-  //   }
-  // }`;
   const response = useQuery(query_gql, {
     variables: {
       urlKey: query.slug[0]

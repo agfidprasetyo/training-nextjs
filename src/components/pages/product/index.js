@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useRouter } from 'next/router';
 import { withApollo } from '../../../../lib/apollo';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import CartButton from '../../CartButton';
 
 // export const getServerSideProps = async (context) => {
 //   const id = context.params.id
@@ -29,7 +30,15 @@ const DetailsFood = () => {
         uid
         name
         brand
-        special_price
+        sku
+        price_range {
+          maximum_price {
+            final_price{
+              value
+              currency
+            }
+          }
+        }
         description{
           html
         }
@@ -46,7 +55,6 @@ const DetailsFood = () => {
     }
   });
   const { loading, data, error } = response;
-  console.log(response)
 
   if (loading) {
     return (
@@ -79,9 +87,9 @@ const DetailsFood = () => {
               <div className="col-lg-6 col-12">
                 <span className="badge bg-warning text-dark p-2">{product.brand}</span>
                 <h1 className="mb-4">{product.name}</h1>
-                <h2>Rp {product.special_price}</h2>
+                <h2>{product.price_range.maximum_price.final_price.currency} {product.price_range.maximum_price.final_price.value}</h2>
                 <p dangerouslySetInnerHTML={{__html:product.description.html}} />
-                <AddShoppingCartIcon />
+                <CartButton product={product} />
               </div>
             </div>
           ))}

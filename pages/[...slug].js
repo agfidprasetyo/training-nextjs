@@ -34,24 +34,28 @@ const Resolver = () => {
       </div>
     )
   }
+  
+  if (data.urlResolver === null) {
+    return (
+      <div>
+        <h1>error page not found</h1>
+      </div>
+    )
+  } else if (data.urlResolver.type === 'CATEGORY') {
+    return (
+      <CategoryDetail />
+    )
+  } else if (data.urlResolver.type === 'PRODUCT') {
+    return (
+      <ProductDetail />
+    )
+  }
 
   if (error) {
     return (
       <div>
         <h1>error {error}</h1>
       </div>
-    )
-  }
-  
-  if (data.urlResolver.type === 'CATEGORY') {
-    return (
-      <CategoryDetail />
-    )
-  }
-
-  if (data.urlResolver.type === 'PRODUCT') {
-    return (
-      <ProductDetail />
     )
   }
 
